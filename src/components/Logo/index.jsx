@@ -14,12 +14,12 @@ const Logo = () => {
         glareColor="lightblue"
         glarePosition="all"
         style={{
-          height: "150px",
-          width: "150px",
+          height: "100px",
+          width: "100px",
           backgroundColor: "darkgreen",
         }}
       >
-        <img alt="Logo" src={brainIcon} style={{ paddingTop: "10px" }} />
+        <img alt="Logo" src={brainIcon} style={{ paddingTop: "10px" }}  height={80}/>
       </Tilt>
     </div>
   );
