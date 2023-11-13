@@ -18,7 +18,12 @@ const Logo = () => {
           backgroundColor: "darkgreen",
         }}
       >
-        <img alt="Logo" src={brainIcon} style={{ paddingTop: "10px" }}  height={80}/>
+        <img
+          alt="Logo"
+          src={brainIcon}
+          style={{ paddingTop: "10px" }}
+          height={80}
+        />
       </Tilt>
     </div>
   );
