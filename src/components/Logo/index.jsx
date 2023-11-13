@@ -9,7 +9,6 @@ const Logo = () => {
       <Tilt
         className="shadow-2  logo"
         glareEnable={true}
-        tiltReverse={true}
         glareMaxOpacity={0.9}
         glareColor="lightblue"
         glarePosition="all"
