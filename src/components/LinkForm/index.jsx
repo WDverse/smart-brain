@@ -1,11 +1,11 @@
 import React from "react";
-import "../../styles/linkform.css";
+import "../../styles/linkForm.css";
 
 const LinkForm = ({ onInputChange, onSubmit }) => {
   return (
     <div>
       <p className="f3">
-        {`This Smart Brain will detect faces in your images. Paste image URL to give it a try!`}
+        {`This Smart Brain will detect emotions of faces in your images. Paste image URL to give it a try!`}
       </p>
 
       <div className="center">

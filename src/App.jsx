@@ -5,6 +5,7 @@ import Logo from "./components/Logo";
 import LinkForm from "./components/LinkForm";
 import Rank from "./components/Rank";
 import FaceRecognition from "./components/FaceRecognition";
+import SignIn from "./components/SignIn";
 import ParticlesBg from "particles-bg";
 
 const returnClarifaiRequestOptions = (imageURL) => {
@@ -44,6 +45,25 @@ const returnClarifaiRequestOptions = (imageURL) => {
 const App = () => {
   const [input, setInput] = useState(" ");
   const [imageURL, setImageURL] = useState("");
+  const [box, setBox] = useState({});
+
+  const detectFaceLocation = (data) => {
+    const face = data.outputs[0].data.regions[0].region_info.bounding_box;
+    const image = document.getElementById("inputImage");
+    const width = Number(image.width);
+    const height = Number(image.height);
+    return {
+      leftCol: face.left_col * width,
+      topRow: face.top_row * height,
+      rightCol: width - face.right_col * width,
+      bottomRow: height - face.bottom_row * height,
+    };
+  };
+
+  const faceBox = (box) => {
+    console.log(box)
+    setBox(box);
+  };
 
   const onInputChange = (event) => {
     setInput(event.target.value);
@@ -52,14 +72,11 @@ const App = () => {
   const onSubmit = () => {
     setImageURL(input);
     fetch(
-      // eslint-disable-next-line no-useless-concat
-      "https://api.clarifai.com/v2/models/" + "face-detection" + "/outputs",
+      "https://api.clarifai.com/v2/models/face-detection/outputs",
       returnClarifaiRequestOptions(input)
     )
       .then((response) => response.json())
-      .then((result) =>
-        console.log(result.outputs[0].data.regions[0].region_info.bounding_box)
-      )
+      .then((result) => faceBox(detectFaceLocation(result)))
       .catch((error) => console.log("error", error));
   };
 
@@ -67,10 +84,11 @@ const App = () => {
     <div className="App">
       <ParticlesBg color="#ebe8e8" type="cobweb" num={200} bg={true} />
       <Navigation />
+      <SignIn/>
       <Logo />
       <Rank />
       <LinkForm onInputChange={onInputChange} onSubmit={onSubmit} />
-      <FaceRecognition imageURL={imageURL} />
+      <FaceRecognition box={box}imageURL={imageURL} />
     </div>
   );
 };
