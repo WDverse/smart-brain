@@ -46,6 +46,7 @@ const App = () => {
   const [input, setInput] = useState(" ");
   const [imageURL, setImageURL] = useState("");
   const [box, setBox] = useState({});
+  const [route, setRoute] = useState('signIn')
 
   const detectFaceLocation = (data) => {
     const face = data.outputs[0].data.regions[0].region_info.bounding_box;
