@@ -4,7 +4,7 @@ import Navigation from "./components/Navigation";
 import Logo from "./components/Logo";
 import LinkForm from "./components/LinkForm";
 import Rank from "./components/Rank";
-import FaceRecognition from "./components/FaceRecognition";
+import FaceRecognition from "./components/EmotionRecognition";
 import Register from "./components/Register";
 import SignIn from "./components/SignIn";
 import ParticlesBg from "particles-bg";
@@ -13,7 +13,7 @@ const returnClarifaiRequestOptions = (imageURL) => {
   const PAT = "6183634a6fd4459e895e2b8fcc92b1e1";
   const USER_ID = "wdappiagyei";
   const APP_ID = "smartbrain";
-  const MODEL_ID = "face-detection";
+  const MODEL_ID = "face-sentiment-recognition";
   const IMAGE_URL = imageURL;
 
   const raw = JSON.stringify({
@@ -46,25 +46,17 @@ const returnClarifaiRequestOptions = (imageURL) => {
 const App = () => {
   const [input, setInput] = useState(" ");
   const [imageURL, setImageURL] = useState("");
-  const [box, setBox] = useState({});
+  const [sentiment, setSentiment] = useState("");
   const [route, setRoute] = useState("signIn");
   const [isSignedIn, setIsSignedIn] = useState(false);
 
-  const detectFaceLocation = (data) => {
-    const face = data.outputs[0].data.regions[0].region_info.bounding_box;
-    const image = document.getElementById("inputImage");
-    const width = Number(image.width);
-    const height = Number(image.height);
-    return {
-      leftCol: face.left_col * width,
-      topRow: face.top_row * height,
-      rightCol: width - face.right_col * width,
-      bottomRow: height - face.bottom_row * height,
-    };
+  const detectEmotion = (data) => {
+    const emotion = data.outputs[0].data.concepts[0].name;
+    return emotion;
   };
 
-  const faceBox = (box) => {
-    setBox(box);
+  const faceEmotion = (emotion) => {
+    setSentiment(emotion);
   };
 
   const onInputChange = (event) => {
@@ -75,11 +67,12 @@ const App = () => {
     setImageURL(input);
     try {
       const response = await fetch(
-        "https://api.clarifai.com/v2/models/face-detection/outputs",
+        "https://api.clarifai.com/v2/models/face-sentiment-recognition/outputs",
         returnClarifaiRequestOptions(input)
       );
       const data = await response.json();
-      return faceBox(detectFaceLocation(data));
+      console.log(data)
+      return faceEmotion(detectEmotion(data));
     } catch (err) {
       console.log(err);
     }
@@ -99,7 +92,7 @@ const App = () => {
           <Logo />
           <Rank />
           <LinkForm onInputChange={onInputChange} onSubmit={onSubmit} />
-          <FaceRecognition box={box} imageURL={imageURL} />
+          <FaceRecognition sentiment={sentiment} imageURL={imageURL} />
         </div>
       ) : route === "signIn" ? (
         <SignIn onRouteChange={onRouteChange} />
