@@ -1,13 +1,13 @@
 import React from "react";
 import "../../styles/emotionRecognition.css";
 
-const EmotionRecognition = ({ imageURL, sentiment }) => {
+const EmotionRecognition = ({ imageURL, message }) => {
   return !imageURL ? (
     <div className="center ma">
       <div className="absolute mt2">
         <img
           className="shadow-5 br3"
-          src={`https://image.cnbcfm.com/api/v1/image/104819285-thor.jpg?v=1529476684&w=1600&h=900`}
+          src={`https://wallpapers.com/images/hd/brain-si5nkukyramo27ni.jpg`}
           width="500"
           height="auto"
           alt=""
@@ -17,7 +17,7 @@ const EmotionRecognition = ({ imageURL, sentiment }) => {
   ) : (
     <div className="center ma">
       <div className="absolute mt2">
-        <p className="emotion shadow-5 br3 pa3"> Smart brain detects {sentiment} </p>
+        <p className="emotion shadow-5 br3 pa3"> {message} </p>
         <img
           id="inputImage"
           className="shadow-5 br3"

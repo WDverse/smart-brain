@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navigation from "./components/Navigation";
 import Logo from "./components/Logo";
 import LinkForm from "./components/LinkForm";
@@ -47,6 +47,7 @@ const App = () => {
   const [input, setInput] = useState(" ");
   const [imageURL, setImageURL] = useState("");
   const [sentiment, setSentiment] = useState("");
+  const [message, setMessage] = useState("");
   const [route, setRoute] = useState("signIn");
   const [isSignedIn, setIsSignedIn] = useState(false);
 
@@ -59,24 +60,36 @@ const App = () => {
     setSentiment(emotion);
   };
 
-  const onInputChange = (event) => {
-    setInput(event.target.value);
-  };
+  useEffect(() => {
+    if (sentiment) {
+      setMessage(`Smart Brain detects ${sentiment}`);
+    }
+  }, [sentiment]);
 
   const onSubmit = async () => {
+    if (!imageURL.trim()) {
+      setMessage("Please enter image URL");
+    } else {
+      setMessage(`Smart Brain detects ${sentiment}`);
+    }
+
     setImageURL(input);
     try {
       const response = await fetch(
         "https://api.clarifai.com/v2/models/face-sentiment-recognition/outputs",
         returnClarifaiRequestOptions(input)
-      );
-      const data = await response.json();
-      console.log(data)
-      return faceEmotion(detectEmotion(data));
-    } catch (err) {
-      console.log(err);
-    }
-  };
+        );
+        const data = await response.json();
+        console.log(data);
+        return faceEmotion(detectEmotion(data));
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    
+    const onInputChange = (event) => {
+      setInput(event.target.value);
+    };
 
   const onRouteChange = (route) => {
     setIsSignedIn(route === "home" ? true : false);
@@ -92,7 +105,7 @@ const App = () => {
           <Logo />
           <Rank />
           <LinkForm onInputChange={onInputChange} onSubmit={onSubmit} />
-          <FaceRecognition sentiment={sentiment} imageURL={imageURL} />
+          <FaceRecognition imageURL={imageURL} message={message} />
         </div>
       ) : route === "signIn" ? (
         <SignIn onRouteChange={onRouteChange} />
