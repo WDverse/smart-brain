@@ -3,17 +3,7 @@ import "../../styles/emotionRecognition.css";
 
 const EmotionRecognition = ({ imageURL, message }) => {
   return !imageURL ? (
-    <div className="center ma">
-      <div className="absolute mt2">
-        <img
-          className="shadow-5 br3"
-          src={`https://wallpapers.com/images/hd/brain-si5nkukyramo27ni.jpg`}
-          width="500"
-          height="auto"
-          alt=""
-        />
-      </div>
-    </div>
+    <p></p>
   ) : (
     <div className="center ma">
       <div className="absolute mt2">

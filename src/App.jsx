@@ -13,7 +13,6 @@ const returnClarifaiRequestOptions = (imageURL) => {
   const PAT = "6183634a6fd4459e895e2b8fcc92b1e1";
   const USER_ID = "wdappiagyei";
   const APP_ID = "smartbrain";
-  const MODEL_ID = "face-sentiment-recognition";
   const IMAGE_URL = imageURL;
 
   const raw = JSON.stringify({
@@ -80,7 +79,6 @@ const App = () => {
         returnClarifaiRequestOptions(input)
         );
         const data = await response.json();
-        console.log(data);
         return faceEmotion(detectEmotion(data));
       } catch (err) {
         console.log(err);

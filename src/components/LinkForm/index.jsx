@@ -5,7 +5,10 @@ const LinkForm = ({ onInputChange, onSubmit }) => {
   return (
     <div>
       <p className="f3">
-        {`This Smart Brain will detect emotions of faces in your images. Paste image URL to give it a try!`}
+        {`This Smart Brain will detect emotions of faces in your close-cropped face images.`}
+      </p>
+      <p className="f3">
+        {`Paste image URL to give it a try!`}
       </p>
 
       <div className="center">
