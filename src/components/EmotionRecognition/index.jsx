@@ -1,7 +1,7 @@
 import React from "react";
-import "../../styles/faceRecognition.css";
+import "../../styles/emotionRecognition.css";
 
-const FaceRecognition = ({ imageURL, box }) => {
+const EmotionRecognition = ({ imageURL, sentiment }) => {
   return !imageURL ? (
     <div className="center ma">
       <div className="absolute mt2">
@@ -17,6 +17,7 @@ const FaceRecognition = ({ imageURL, box }) => {
   ) : (
     <div className="center ma">
       <div className="absolute mt2">
+        <p className="emotion shadow-5 br3 pa3"> Smart brain detects {sentiment} </p>
         <img
           id="inputImage"
           className="shadow-5 br3"
@@ -25,18 +26,9 @@ const FaceRecognition = ({ imageURL, box }) => {
           height="auto"
           alt=""
         />
-        <div
-          className="bounding-box"
-          style={{
-            top: box.topRow,
-            right: box.rightCol,
-            bottom: box.bottomRow,
-            left: box.leftCol,
-          }}
-        ></div>
       </div>
     </div>
   );
 };
 
-export default FaceRecognition;
+export default EmotionRecognition;
