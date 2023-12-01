@@ -9,6 +9,8 @@ import Register from "./components/Register";
 import SignIn from "./components/SignIn";
 import ParticlesBg from "particles-bg";
 
+
+
 const returnClarifaiRequestOptions = (imageURL) => {
   const PAT = "6183634a6fd4459e895e2b8fcc92b1e1";
   const USER_ID = "wdappiagyei";
@@ -49,6 +51,23 @@ const App = () => {
   const [message, setMessage] = useState("");
   const [route, setRoute] = useState("signIn");
   const [isSignedIn, setIsSignedIn] = useState(false);
+
+
+ 
+useEffect(() => {
+  const fetchData = async ()=> {
+    try{
+      const response = await fetch(`http://localhost:3000`);
+      const data = await response.json();
+      console.log(data)
+    }catch(err){
+      console.log(err)
+    }
+  }
+  fetchData();
+}, []); 
+
+
 
   const detectEmotion = (data) => {
     const emotion = data.outputs[0].data.concepts[0].name;
