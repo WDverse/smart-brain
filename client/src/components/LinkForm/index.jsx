@@ -1,7 +1,7 @@
 import React from "react";
 import "../../styles/linkForm.css";
 
-const LinkForm = ({ onInputChange, onSubmit }) => {
+const LinkForm = ({ onInputChange, onURLSubmit }) => {
   return (
     <div>
       <p className="f3">
@@ -20,7 +20,7 @@ const LinkForm = ({ onInputChange, onSubmit }) => {
           />
           <button
             className="w-30 grow f4 link ph3 pv2 dib white bg-light-purple"
-            onClick={onSubmit}
+            onClick={onURLSubmit}
           >
             Detect
           </button>

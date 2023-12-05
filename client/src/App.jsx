@@ -3,13 +3,11 @@ import { useState, useEffect } from "react";
 import Navigation from "./components/Navigation";
 import Logo from "./components/Logo";
 import LinkForm from "./components/LinkForm";
-import Rank from "./components/Rank";
+import Entries from "./components/Entries";
 import FaceRecognition from "./components/EmotionRecognition";
 import Register from "./components/Register";
 import SignIn from "./components/SignIn";
 import ParticlesBg from "particles-bg";
-
-
 
 const returnClarifaiRequestOptions = (imageURL) => {
   const PAT = "6183634a6fd4459e895e2b8fcc92b1e1";
@@ -51,23 +49,36 @@ const App = () => {
   const [message, setMessage] = useState("");
   const [route, setRoute] = useState("signIn");
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const [user, setUser] = useState({
+    id: "",
+    name: "",
+    email: "",
+    entries: 0,
+    joined: "",
+  });
 
+  const loadUser = (user) => {
+    setUser({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      entries: user.entries,
+      joined: user.joined,
+    });
+  };
 
- 
-useEffect(() => {
-  const fetchData = async ()=> {
-    try{
-      const response = await fetch(`http://localhost:3000`);
-      const data = await response.json();
-      console.log(data)
-    }catch(err){
-      console.log(err)
-    }
-  }
-  fetchData();
-}, []); 
-
-
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000`);
+        const data = await response.json();
+        console.log(data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, []);
 
   const detectEmotion = (data) => {
     const emotion = data.outputs[0].data.concepts[0].name;
@@ -84,7 +95,7 @@ useEffect(() => {
     }
   }, [sentiment]);
 
-  const onSubmit = async () => {
+  const onURLSubmit = async () => {
     if (!imageURL.trim()) {
       setMessage("Please enter image URL");
     } else {
@@ -96,17 +107,30 @@ useEffect(() => {
       const response = await fetch(
         "https://api.clarifai.com/v2/models/face-sentiment-recognition/outputs",
         returnClarifaiRequestOptions(input)
-        );
-        const data = await response.json();
-        return faceEmotion(detectEmotion(data));
-      } catch (err) {
-        console.log(err);
+      );
+      const data = await response.json();
+      if (response) {
+        fetch("http://localhost:3000/image", {
+          method: "put",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: user.id,
+          }),
+        })
+          .then((response) => response.json)
+          .then((count) => {
+            setUser(Object.assign(user, {entries:count}));
+          });
       }
-    };
-    
-    const onInputChange = (event) => {
-      setInput(event.target.value);
-    };
+      return faceEmotion(detectEmotion(data));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const onInputChange = (event) => {
+    setInput(event.target.value);
+  };
 
   const onRouteChange = (route) => {
     setIsSignedIn(route === "home" ? true : false);
@@ -120,14 +144,14 @@ useEffect(() => {
       {route === "home" ? (
         <div>
           <Logo />
-          <Rank />
-          <LinkForm onInputChange={onInputChange} onSubmit={onSubmit} />
+          <Entries userName={user.name} userEntries={user.entries} />
+          <LinkForm onInputChange={onInputChange} onURLSubmit={onURLSubmit} />
           <FaceRecognition imageURL={imageURL} message={message} />
         </div>
       ) : route === "signIn" ? (
-        <SignIn onRouteChange={onRouteChange} />
+        <SignIn onRouteChange={onRouteChange} loadUser={loadUser} />
       ) : (
-        <Register onRouteChange={onRouteChange} />
+        <Register onRouteChange={onRouteChange} loadUser={loadUser} />
       )}
     </div>
   );
