@@ -27,7 +27,7 @@ const Register = ({ onRouteChange, loadUser }) => {
     }).then((response)=>{
       return response.json()
     }).then((user)=> {
-      if (user){
+      if (user.email){
         loadUser(user)
         onRouteChange("home");
       }
