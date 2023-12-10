@@ -120,7 +120,7 @@ const App = () => {
           .then((response) => response.json)
           .then((count) => {
             setUser(Object.assign(user, {entries:count}));
-          });
+          }).catch(console.log)
       }
       return faceEmotion(detectEmotion(data));
     } catch (err) {
