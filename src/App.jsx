@@ -70,7 +70,7 @@ const App = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:3000`);
+        const response = await fetch(`https://frozen-island-82033-23c487e4b843.herokuapp.com/`);
         const data = await response.json();
         console.log(data);
       } catch (err) {
@@ -110,7 +110,7 @@ const App = () => {
       );
       const data = await response.json();
       if (response) {
-        fetch("http://localhost:3000/image", {
+        fetch("https://frozen-island-82033-23c487e4b843.herokuapp.com/image", {
           method: "put",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

@@ -16,7 +16,7 @@ const Register = ({ onRouteChange, loadUser }) => {
   };
 
   const onRegister = () => {
-    fetch("http://localhost:3000/register", {
+    fetch("https://frozen-island-82033-23c487e4b843.herokuapp.com/register", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
